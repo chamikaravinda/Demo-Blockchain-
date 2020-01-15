@@ -10,7 +10,7 @@ describe('Blockchain',()=>{
     });
 
     it('starts with the genisis block',()=>{
-        expect(bc.chain[0].toEqual(Block.genesis()));
+        expect(bc.chain[0]).toEqual(Block.genesis());
     });
 
     it ('add a new block',() =>{
@@ -37,5 +37,19 @@ describe('Blockchain',()=>{
         bc2.chain[1].data ='Not foo';
 
         expect(bc.isValidChain(bc2.chain)).toBe(false);
+    });
+
+    it('replace the chain with a valid chain ',() =>{
+        bc2.addBlock('goo');
+        bc.replaceChain(bc2.chain);
+
+        expect(bc.chain).toEqual(bc2.chain);
+    });
+
+    it('does not replace the chain with one of less than or equal to length',() =>{
+        bc.addBlock('foo');
+        bc.replaceChain(bc2.chain);
+
+        expect(bc.chain).not.toEqual(bc2.chain);
     });
 });
